@@ -100,7 +100,7 @@ contract P2PPayments {
         // check proof from LIT protocol gateaway
         ITransactionChecker.Transaction memory transaction = checkerContract.getTransaction(transactionId);
         require(keccak256(abi.encodePacked(transaction.name)) == request.zelleEmailHash, "Invalid transaction name hash");
-        // complete transfer
+        // transfer complete
         usdtToken.transfer(request.executor, request.amount);
         delete requests[requestId];
         emit PaymentConfirmed(requestId, msg.sender);
