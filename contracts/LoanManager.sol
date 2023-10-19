@@ -15,8 +15,8 @@ contract LoanManager {
         ERC20 debtToken;
         uint256 collateralAmount;
         uint256 duration;
-        uint256 terms;
-        uint256 startingTime;
+        uint256 loanTerms;
+        uint256 startTime;
         uint256 debtAmount;
         uint256 interestRate;
     }
@@ -24,32 +24,32 @@ contract LoanManager {
     struct Auction {
         uint256 id;
         uint256 loanId;
-        uint256 startingPrice;
-        uint256 endingPrice;
+        uint256 startPrice;
+        uint256 endPrice;
         uint256 duration;
-        uint256 startingTime;
+        uint256 startTime;
     }
 
-    struct Terms {
-        uint256 dutchAuctionMultiplier;
+    struct LoanTerms {
+        uint256 dutchMultiplier;
         uint256 settlementMultiplier;
         uint256 liquidationBonus;
-        uint256 auctionLength;
+        uint256 auctionDuration;
     }
 
     uint256 constant private SCALAR = 1e6;
 
     uint256 public loanCount;
     Auction[] public auctions;
-    Terms[] public loanTerms;
+    LoanTerms[] public loanTerms;
     uint256[] public durations = [7 hours, 1 days, 2 days, 7 days, 0];
     mapping(uint256 => uint256) public loanIdToAuction;
     mapping(uint256 => Loan) public loans;
     mapping(address => uint256[]) public borrowerLoans;
     mapping(address => uint256[]) public lenderLoans;
 
-    event LoanRepaid(uint256 indexed id, address indexed borrower, address indexed lender, uint256 amount);
-    event LoanCreated(
+    event Repaid(uint256 indexed id, address indexed borrower, address indexed lender, uint256 amount);
+    event Created(
         uint256 indexed id,
         address indexed borrower,
         address indexed lender,
@@ -58,22 +58,23 @@ contract LoanManager {
         uint256 collateralAmount,
         uint256 debtAmount,
         uint256 interestRate,
-        uint256 startingTime,
+        uint256 startTime,
         uint256 duration,
-        uint256 terms
+        uint256 loanTerms
     );
 
-    event AuctionCreated(
+    event AuctionStarted(
         uint256 indexed id,
         uint256 indexed loanId,
         uint256 duration,
-        uint256 startingPrice,
-        uint256 startingTime,
-        uint256 endingPrice
+        uint256 startPrice,
+        uint256 startTime,
+        uint256 endPrice
     );
-    event AuctionSettled(uint256 indexed auction, address bidder, uint256 price);
-    event AuctionReclaimed(uint256 indexed loanId, uint256 amount);
-    event TermsSet(uint256 termId, Terms term);
+
+    event SettledAuction(uint256 indexed auction, address bidder, uint256 price);
+    event ReclaimedAuction(uint256 indexed loanId, uint256 amount);
+    event TermsChanged(uint256 termId, LoanTerms terms);
 
     constructor() {}
 
@@ -85,7 +86,7 @@ contract LoanManager {
         uint256 _debtAmount,
         uint256 _interestRate,
         uint256 _duration,
-        uint256 _terms
+        uint256 _loanTerms
     ) external {
         createLoan(
             _lender,
@@ -96,7 +97,7 @@ contract LoanManager {
             _debtAmount,
             _interestRate,
             _duration,
-            _terms,
+            _loanTerms,
             ""
         );
     }
@@ -110,7 +111,7 @@ contract LoanManager {
         uint256 _debtAmount,
         uint256 _interestRate,
         uint256 _duration,
-        uint256 _terms,
+        uint256 _loanTerms,
         bytes32 _data
     ) public {
         loanCount++;
@@ -125,7 +126,7 @@ contract LoanManager {
             _interestRate,
             block.timestamp,
             durations[_duration],
-            _terms
+            _loanTerms
         );
 
         loans[loanCount] = newLoan;
@@ -134,7 +135,7 @@ contract LoanManager {
         _collateral.safeTransferFrom(msg.sender, address(this), _collateralAmount);
         _debt.safeTransferFrom(_lender, address(this), _debtAmount);
         _debt.safeTransfer(msg.sender, _debtAmount);
-        emit LoanCreated(
+        emit Created(
             newLoan.id,
             newLoan.borrower,
             newLoan.lender,
@@ -143,21 +144,21 @@ contract LoanManager {
             newLoan.collateralAmount,
             newLoan.debtAmount,
             newLoan.interestRate,
-            newLoan.startingTime,
+            newLoan.startTime,
             newLoan.duration,
-            newLoan.terms
+            newLoan.loanTerms
         );
     }
 
     function liquidateLoan(uint256 _loanId) external {
         Loan storage loan = loans[_loanId];
         require(loan.lender == msg.sender, "Only lender can liquidate");
-        if (loan.duration + loan.startingTime > block.timestamp || loan.duration == type(uint256).max) {
+        if (loan.duration + loan.startTime > block.timestamp || loan.duration == type(uint256).max) {
             revert("Loan not yet liquidatable or is already in auction");
         }
-        uint256 interest = calculateInterest(loan.interestRate, loan.debtAmount, loan.startingTime, block.timestamp);
+        uint256 interest = calculateInterest(loan.interestRate, loan.debtAmount, loan.startTime, block.timestamp);
         uint256 totalDebt = loan.debtAmount + interest;
-        startAuction(_loanId, totalDebt, interest, loan.terms);
+        startAuction(_loanId, totalDebt, interest, loan.loanTerms);
 
         loan.duration = type(uint256).max;
     }
@@ -166,12 +167,12 @@ contract LoanManager {
         repayLoan(_loanId, msg.sender);
     }
 
-    function repayLoan(uint256 _loanId, address onBehalfof) public {
+    function repayLoan(uint256 _loanId, address onBehalfOf) public {
         Loan memory loan = loans[_loanId];
-        uint256 interest = calculateInterest(loan.interestRate, loan.debtAmount, loan.startingTime, block.timestamp);
+        uint256 interest = calculateInterest(loan.interestRate, loan.debtAmount, loan.startTime, block.timestamp);
         uint256 totalDebt = loan.debtAmount + interest;
-        loan.debtToken.safeTransferFrom(onBehalfof, loan.lender, totalDebt);
-        emit LoanRepaid(_loanId, loan.borrower, loan.lender, totalDebt);
+        loan.debtToken.safeTransferFrom(onBehalfOf, loan.lender, totalDebt);
+        emit Repaid(_loanId, loan.borrower, loan.lender, totalDebt);
         try Lender(loan.lender).loanRepaid(loan) {} catch {}
         if (loan.duration == 0) delete auctions[loanIdToAuction[_loanId]];
     }
@@ -179,39 +180,39 @@ contract LoanManager {
     function rebalanceRate(uint256 _loanId, uint256 _newRate) external {
         Loan storage loan = loans[_loanId];
         require(loan.lender == msg.sender, "Only lender can rebalance the rate");
-        if (loan.duration + loan.startingTime > block.timestamp) {
+        if (loan.duration + loan.startTime > block.timestamp) {
             revert("Loan not yet adjustable");
         }
-        uint256 interest = calculateInterest(loan.interestRate, loan.debtAmount, loan.startingTime, block.timestamp);
+        uint256 interest = calculateInterest(loan.interestRate, loan.debtAmount, loan.startTime, block.timestamp);
         uint256 totalDebt = loan.debtAmount + interest;
         loan.debtAmount = totalDebt;
-        loan.startingTime = block.timestamp;
+        loan.startTime = block.timestamp;
         loan.interestRate = _newRate;
         if (isContract(loan.borrower)) {
             try Borrower(loan.borrower).interestRateUpdate(loan, _newRate) {} catch {}
         }
     }
 
-    function startAuction(uint256 _loanId, uint256 _amount, uint256 _interestRate, uint256 _terms) internal {
-        Terms memory terms = loanTerms[_terms];
-        uint256 startPrice = ((_amount + _interestRate) * terms.dutchAuctionMultiplier) / SCALAR;
+    function startAuction(uint256 _loanId, uint256 _amount, uint256 _interestRate, uint256 _loanTerms) internal {
+        LoanTerms memory terms = loanTerms[_loanTerms];
+        uint256 startPrice = ((_amount + _interestRate) * terms.dutchMultiplier) / SCALAR;
         uint256 endPrice = (_amount * _interestRate) / (terms.settlementMultiplier * SCALAR);
         Auction memory newAuction =
-            Auction(auctions.length, _loanId, terms.auctionLength, startPrice, block.timestamp, endPrice);
+            Auction(auctions.length, _loanId, terms.auctionDuration, startPrice, block.timestamp, endPrice);
         auctions.push(newAuction);
         loanIdToAuction[_loanId] = newAuction.id;
-        emit AuctionCreated(newAuction.id, newAuction.loanId, newAuction.duration, newAuction.startingPrice, newAuction.startingTime, newAuction.endingPrice);
+        emit AuctionStarted(newAuction.id, newAuction.loanId, newAuction.duration, newAuction.startPrice, newAuction.startTime, newAuction.endPrice);
     }
 
     function bid(uint256 _auctionId) external {
         Auction memory auction = auctions[_auctionId];
         Loan memory loan = loans[auction.loanId];
-        Terms memory terms = loanTerms[loan.terms];
-        require(auction.startingTime + auction.duration > block.timestamp, "Auction has ended");
+        LoanTerms memory terms = loanTerms[loan.loanTerms];
+        require(auction.startTime + auction.duration > block.timestamp, "Auction has ended");
         uint256 currentPrice = getCurrentPrice(_auctionId);
         loan.debtToken.safeTransferFrom(msg.sender, address(this), currentPrice);
         loan.collateralToken.safeTransfer(msg.sender, loan.collateralAmount);
-        uint256 interest = calculateInterest(loan.interestRate, loan.debtAmount, loan.startingTime, block.timestamp);
+        uint256 interest = calculateInterest(loan.interestRate, loan.debtAmount, loan.startTime, block.timestamp);
         uint256 lenderClearing = ((loan.debtAmount + interest) * terms.liquidationBonus) / SCALAR;
         uint256 lenderReturn = (lenderClearing > currentPrice) ? currentPrice : lenderClearing;
         uint256 borrowerReturn = currentPrice - lenderReturn;
@@ -223,25 +224,25 @@ contract LoanManager {
         if (borrowerReturn > 0) {
             loan.debtToken.safeTransfer(loan.borrower, borrowerReturn);
         }
-        emit AuctionSettled(_auctionId, msg.sender, currentPrice);
+        emit SettledAuction(_auctionId, msg.sender, currentPrice);
     }
 
     function reclaim(uint256 _auctionId) external {
         Auction memory auction = auctions[_auctionId];
-        require(auction.startingTime + auction.duration < block.timestamp, "Auction has not ended");
-        require(auction.endingPrice == auction.startingPrice, "Auction has not ended");
+        require(auction.startTime + auction.duration < block.timestamp, "Auction has not ended");
+        require(auction.endPrice == auction.startPrice, "Auction has not ended");
         Loan memory loan = loans[auction.loanId];
         loan.collateralToken.safeTransfer(loan.lender, loan.collateralAmount);
         delete auctions[_auctionId];
         delete loanIdToAuction[auction.loanId];
-        emit AuctionReclaimed(_auctionId, loan.collateralAmount);
+        emit ReclaimedAuction(_auctionId, loan.collateralAmount);
     }
 
     function getCurrentPrice(uint256 _auctionId) public view returns (uint256) {
         Auction memory auction = auctions[_auctionId];
-        uint256 startPrice = auction.startingPrice;
-        uint256 endPrice = auction.endingPrice;
-        uint256 startTime = auction.startingTime;
+        uint256 startPrice = auction.startPrice;
+        uint256 endPrice = auction.endPrice;
+        uint256 startTime = auction.startTime;
         uint256 duration = auction.duration;
         if (block.timestamp >= startTime + duration) {
             return endPrice;
@@ -252,21 +253,21 @@ contract LoanManager {
         }
     }
 
-    function setTerms(Terms memory _terms) external returns (uint256) {
+    function setLoanTerms(LoanTerms memory _terms) external returns (uint256) {
         loanTerms.push(_terms);
-        emit TermsSet(loanTerms.length - 1, _terms);
+        emit TermsChanged(loanTerms.length - 1, _terms);
         return loanTerms.length - 1;
     }
 
     function updateBorrower(uint256 _loanId, address _borrower) external {
         Loan storage loan = loans[_loanId];
-        require(loan.lender == msg.sender, "Only Borrower can update borrower");
+        require(loan.lender == msg.sender, "Only borrower can update the borrower");
         loan.borrower = _borrower;
     }
 
     function getLoan(uint256 _loanId) external view returns (Loan memory loan) {
         loan = loans[_loanId];
-        loan.debtAmount += calculateInterest(loan.interestRate, loan.debtAmount, loan.startingTime, block.timestamp);
+        loan.debtAmount += calculateInterest(loan.interestRate, loan.debtAmount, loan.startTime, block.timestamp);
     }
 
     function isContract(address _addr) private view returns (bool) {
