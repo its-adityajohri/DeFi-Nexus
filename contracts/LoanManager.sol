@@ -77,7 +77,7 @@ contract LoanManager {
     event TermsChanged(uint256 termId, LoanTerms terms);
 
     constructor() {}
-
+    //function to manage Loan system
     function createLoan(
         address _lender,
         ERC20 _collateral,
