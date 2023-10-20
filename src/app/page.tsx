@@ -10,9 +10,7 @@ export default function Home() {
 
     return(
     <>
-      <header className="w-50">
-        <Navbar/>
-      </header>
+      
       <div className="w-[100vw] h-[100vh]">
       <div className="flex flex-col justify-center items-center p-48 gap-9">
         <h1 className="text-6xl font-bold">Lorem ipsum dolor sit amet consectetur adipisicing.</h1>
