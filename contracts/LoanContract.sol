@@ -195,6 +195,6 @@ interface IPUSHCommInterface {
     ) external;
 }
 
-contract Loans is Lender, Ownable {
+abstract contract Loans is Lender, Ownable {
     
 }
