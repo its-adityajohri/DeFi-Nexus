@@ -8,7 +8,7 @@ const Vote = () => {
   <>
       {
         !user&&<div className='bg-red-300 m-10 p-2 rounded-md'>
-          <p className='text-xl font-semibold pl-2 text-center'>Please connect your wallet to participate in voting.</p>
+          
         </div>
       }
       <DataTable/>

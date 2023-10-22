@@ -31,9 +31,9 @@ const Navbar = () => {
       </div>
 
       <div className="flex flex-1 justify-end">
-        <Link href='/dashboard'>
-          <WalletConnect/>
-        </Link>
+         <Link href='/'>
+           <WalletConnect/>
+         </Link> 
       </div>
       <hr className='absolute top-14 left-[5%] w-[90%] p-[5px]' />
     </nav>

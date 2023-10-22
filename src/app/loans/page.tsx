@@ -7,9 +7,9 @@ const Loans = () => {
   return (
     <div className='p-10 m-10 min-w-fit h-full'>
       <div className="flex justify-evenly">
-        <LoanLog/>
-        <NexusConverter/>
-        <Transaction/>
+       <NexusConverter/>
+       <Transaction/>
+       <LoanLog/>
       </div>
     </div>
   )

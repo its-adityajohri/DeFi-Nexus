@@ -6,9 +6,9 @@
 // global scope, and execute the script.
 const hre = require("hardhat");
 const fs = require("fs");
-
+const address = "0x3B62A1a22d0E8323C311EbE87e4bB246B1A850c2"
 async function main() {
-  const deployedContract = await hre.ethers.deployContract("TransactionStorage");
+  const deployedContract = await hre.ethers.deployContract("NEXSToken", [address]);
   await deployedContract.waitForDeployment();
 
   console.log(

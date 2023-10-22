@@ -11,7 +11,7 @@ const Transaction = () => {
       <h1 className="text-3xl font-bold">Deposit and Borrow</h1>
       <form action="" onSubmit={handleSubmit} className='flex flex-col gap-5 justify-around h-full'>
         <span className='flex flex-col gap-5'>
-          <h3 className="text-xl">Deposit wBTC collateral</h3>
+          <h3 className="text-xl">Deposit collateral</h3>
           <input type="text" placeholder='Deposit here' className='p-2 rounded-md bg-transparent border-solid border-2 border-gray-300'/>
         </span>
         <span className='flex flex-col gap-5'>

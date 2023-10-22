@@ -14,7 +14,7 @@ const NexusConverter = () => {
 
   return (
     <div className='p-10 mt-10 bg-slate-300/70 rounded-lg min-w-[300px] h-[350px]'>
-      <h1 className="text-3xl font-bold">PSM</h1>
+      <h1 className="text-2xl font-bold">Peg Stability</h1>
       <h2 className="text-xl">Mint Nexus with DAI</h2>
       <form action="" className='flex flex-col justify-around h-full' onSubmit={handleSubmit}>
         <span className='flex border-solid p-2 border-2 border-gray-300 rounded-lg'>
