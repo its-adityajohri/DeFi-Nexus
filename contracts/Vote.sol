@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-abstract contract GovernanceTokenVoting is Ownable {
+contract GovernanceTokenVoting is Ownable {
     uint256 public constant VOTING_PERIOD = 7 days;
     IERC20 public immutable governanceToken;
 
@@ -16,10 +16,10 @@ abstract contract GovernanceTokenVoting is Ownable {
     mapping(address => mapping(uint256 => uint256)) public userDeposits;
     mapping(address => mapping(uint256 => Proposal)) public proposals;
     mapping(uint256 => uint256) public totalVotes;
-
+    address initialOwner;
     event UserVote(address indexed voter, address proposal, uint256 epoch);
 
-    constructor(ERC20 _governanceToken) {
+    constructor(ERC20 _governanceToken) Ownable(initialOwner){
         governanceToken = _governanceToken;
     }
 

@@ -1,3 +1,5 @@
+// "use client"
+
 import React from 'react'
 
 const votes=[
@@ -24,35 +26,45 @@ const votes=[
 ]
 
 const DataTable = () => {
+  
   return (
-    <table className='m-10 p-10 w-[90%]'>
-        <tr className='w-fit h-10'>
-          <th className='font-semibold'>COLLATERAL</th>
-          <th className='font-semibold'>STATUS</th>
-          <th className='font-semibold'>LTV</th>
-          <th className='font-semibold'>DEBT CEILING/UTIL</th>
-          <th className='font-semibold'>APY</th>
-          <th className='font-semibold'>R3 BRIBES</th>
-          <th className='font-semibold'>ROUND 3 VOTES</th>
-          <th className='font-semibold'>VOTE</th>
-        </tr>
+      <>
+
+      <div className="p-10 m-10 flex flex-col w-full">
+        <div className="w-[90%] flex flex-col items-center">
+          <div className="flex w-full justify-between items-center">
+            <span className="flex-1 font-semibold text-center">COLLATERAL</span>
+            <span className="flex-1 font-semibold text-center">STATUS</span>
+            <span className="flex-1 font-semibold text-center">LTV</span>
+            <span className="flex-1 font-semibold text-center">DEBT CEILING/UTIL</span>
+            <span className="flex-1 font-semibold text-center">APY</span>
+            <span className="flex-1 font-semibold text-center">R3 BRIBES</span>
+            <span className="flex-1 font-semibold text-center">ROUND 3 VOTES</span>
+            <span className="flex-1 font-semibold text-center">VOTE</span>
+          </div>
+          <hr className="p-[1px] bg-gray-500 w-full mt-5" />
+        </div>
+        
         {
-          votes.map((item)=> {
-            return(
-              <tr className='w-fit h-10' key={item.key}>
-                <th>{item.collateral}</th>
-                <th>{item.status}</th>
-                <th>{item.lvt}</th>
-                <th>{item.debt}</th>
-                <th>{item.api}</th>
-                <th>{item.bribes}</th>
-                <th>{item.votes}</th>
-                <th><button>VOTE</button></th>
-              </tr>
-            )
-          })
+          votes.map((item)=>{ return(
+            <div key={item.key} className="w-[90%] flex flex-col items-center">
+          <div className="flex mt-5 w-full justify-between items-center">
+            <span className="flex-1 text-center">{item.collateral}</span>
+            <span className="flex-1 text-center">{item.status}</span>
+            <span className="flex-1 text-center">{item.lvt}</span>
+            <span className="flex-1 text-center">{item.debt}</span>
+            <span className="flex-1 text-center">{item.api}</span>
+            <span className="flex-1 text-center">{item.bribes}</span>
+            <span className="flex-1 text-center">{item.votes}</span>
+            <span className="flex-1 text-center">
+            <button className='pt-1 pb-1 p-2 m-2 bg-black hover:bg-white text-white hover:text-black outline outline-black outline-2 rounded-md'>VOTE</button>
+            </span>
+          </div>
+        </div>
+          )})
         }
-      </table>
+      </div>
+      </>
   )
 }
 

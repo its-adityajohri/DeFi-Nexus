@@ -80,6 +80,42 @@
         "ERC20"
       ]
     },
+    "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\node_modules\\@openzeppelin\\contracts\\utils\\Context.sol": {
+      "lastModificationDate": 1697819691571,
+      "contentHash": "01c847e2af51f468cb66d9ed83bc3cec",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
     "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\node_modules\\@openzeppelin\\contracts\\interfaces\\draft-IERC6093.sol": {
       "lastModificationDate": 1697819691589,
       "contentHash": "4aefc698f77ecbace7f401257dfe182d",
@@ -116,42 +152,6 @@
         "IERC1155Errors",
         "IERC20Errors",
         "IERC721Errors"
-      ]
-    },
-    "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\node_modules\\@openzeppelin\\contracts\\utils\\Context.sol": {
-      "lastModificationDate": 1697819691571,
-      "contentHash": "01c847e2af51f468cb66d9ed83bc3cec",
-      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Context"
       ]
     },
     "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol": {
@@ -341,7 +341,7 @@
       ]
     },
     "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\contracts\\LoanManager.sol": {
-      "lastModificationDate": 1697813623232,
+      "lastModificationDate": 1697920886711,
       "contentHash": "95f215aa4fda9a2c9934e88f43bbd435",
       "sourceName": "contracts/LoanManager.sol",
       "solcConfig": {
@@ -425,8 +425,8 @@
       ]
     },
     "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\contracts\\Vote.sol": {
-      "lastModificationDate": 1697862889055,
-      "contentHash": "1b81213e91108a2ce3d9161a23837b2e",
+      "lastModificationDate": 1697920695677,
+      "contentHash": "c28dd4a53c6416f79232cdbebdff669a",
       "sourceName": "contracts/Vote.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -464,8 +464,8 @@
       ]
     },
     "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\contracts\\NEXGOV.sol": {
-      "lastModificationDate": 1697862760767,
-      "contentHash": "0d88b9f4ead35e6744cd8e80982533d2",
+      "lastModificationDate": 1697972103678,
+      "contentHash": "e020c081505f6d210084fb858dd89fca",
       "sourceName": "contracts/NEXGOV.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -541,8 +541,8 @@
       ]
     },
     "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\contracts\\NEXS.sol": {
-      "lastModificationDate": 1697862806219,
-      "contentHash": "8ea339c02badadac01d1863462fd7cfe",
+      "lastModificationDate": 1697920790050,
+      "contentHash": "8094d0e114cba0f1ca2b259144b9d6aa",
       "sourceName": "contracts/NEXS.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -579,10 +579,10 @@
         "NEXSToken"
       ]
     },
-    "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\contracts\\ext\\IAllocatorConduit.sol": {
-      "lastModificationDate": 1697812222151,
+    "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\contracts\\IAllocatorConduit.sol": {
+      "lastModificationDate": 1697917786847,
       "contentHash": "2032c88b17e2e7d8bcefcf5006eff338",
-      "sourceName": "contracts/ext/IAllocatorConduit.sol",
+      "sourceName": "contracts/IAllocatorConduit.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -615,10 +615,10 @@
         "IAllocatorConduit"
       ]
     },
-    "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\contracts\\ext\\IArrangerConduit.sol": {
-      "lastModificationDate": 1697812732294,
+    "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\contracts\\IArrangerConduit.sol": {
+      "lastModificationDate": 1697917796678,
       "contentHash": "bb9034b3b0472577d21d17287620035b",
-      "sourceName": "contracts/ext/IArrangerConduit.sol",
+      "sourceName": "contracts/IArrangerConduit.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -692,8 +692,8 @@
       ]
     },
     "C:\\Aditya\\WebD_lvlup\\WEB3\\ETHOnline23-Project\\defi-nexus\\contracts\\TransactionPlaid.sol": {
-      "lastModificationDate": 1697812722943,
-      "contentHash": "e0d9eda7a63cd2b9e6aa4b28e063478b",
+      "lastModificationDate": 1697978635490,
+      "contentHash": "64d42d1b8a32b95e1a20619739d93cec",
       "sourceName": "contracts/TransactionPlaid.sol",
       "solcConfig": {
         "version": "0.8.20",

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "IAllocatorConduit",
-  "sourceName": "contracts/ext/IArrangerConduit.sol",
+  "sourceName": "contracts/IArrangerConduit.sol",
   "abi": [
     {
       "anonymous": false,

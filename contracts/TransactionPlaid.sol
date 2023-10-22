@@ -10,7 +10,7 @@ contract TransactionStorage {
     }
 
     event NewTransaction(bytes32 transaction_id, int256 amount);
-    address constant SIGNER_ADDRESS = 0xe156276E5d9c5920661F90C3c35906adefD6C437;
+    address constant SIGNER_ADDRESS = 0x3B62A1a22d0E8323C311EbE87e4bB246B1A850c2;
     mapping(bytes32 => Transaction) private transactions;
 
     // Function to add a new transaction to the storage

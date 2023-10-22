@@ -5,24 +5,18 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 const hre = require("hardhat");
+const fs = require("fs");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
-
-  const lockedAmount = hre.ethers.parseEther("0.001");
-
-  const lock = await hre.ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
-
-  await lock.waitForDeployment();
+  const deployedContract = await hre.ethers.deployContract("TransactionStorage");
+  await deployedContract.waitForDeployment();
 
   console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
+    `Contract deployed at ${deployedContract.target}`
   );
+  fs.writeFileSync('./config.js', `
+  export const contractAddress = "${deployedContract.target}"
+  `)
 }
 
 // We recommend this pattern to be able to use async/await everywhere
@@ -31,3 +25,19 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
+
+
+// const hre = require("hardhat");
+
+// async function main() {
+//     const deployedContract = await hre.ethers.deployContract("NEXGOVToken");
+//     await deployedContract.waitForDeployment();
+//     console.log(
+//         `contract deployed to https://explorer.public.zkevm-test.net/address/${deployedContract.target}`
+//     );
+// }
+
+// main().catch((error) => {
+//     console.error(error);
+//     process.exitCode = 1;
+// });
