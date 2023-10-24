@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/Lit-Plaid/Plaid-Lit-Action.js", "src/Lit-Plaid/LitPKP.js"],
   "exclude": ["node_modules"]
 }

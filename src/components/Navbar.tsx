@@ -29,7 +29,6 @@ const Navbar = () => {
           </a>
         ))}
       </div>
-
       <div className="flex flex-1 justify-end">
          <Link href='/'>
            <WalletConnect/>

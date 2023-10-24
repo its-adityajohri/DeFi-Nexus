@@ -13,6 +13,7 @@
     "@chakra-ui/react": "2.4.4",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@lit-protocol/lit-node-client-nodejs": "^2.2.61",
     "@next/font": "13.1.1",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@nomiclabs/hardhat-waffle": "^2.0.6",
